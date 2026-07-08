@@ -121,5 +121,4 @@ jobs:
           gh release create "v${VERSION}" \
             --title "v${VERSION}" \
             --notes "Automated release of PaperKnife v${VERSION}" \
-            --clobber \
-            $FILES
+            $FILES || gh release upload "v${VERSION}" $FILES --clobber
