@@ -124,29 +124,8 @@ jobs:
           # Find all prepared apk files
           FILES=$(ls paperknife-*.apk)
           
-          # Generate beautiful release notes matching potatameister style
-          cat <<EOF > release_notes.md
-# PaperKnife v${VERSION} Release
-
-## Visuals & User Interface
-- Upgraded PDF engine and framework dependencies.
-- Restored compile SDK version to Android 36 for complete compatibility.
-- Fixed the blank page landing and asset path issues on deployed web version.
-
----
-
-## 📦 APK Version Comparison
-
-| Feature | Full Version (paperknife-v${VERSION}.apk) | Lite Version (paperknife-lite-v${VERSION}.apk) |
-| :--- | :--- | :--- |
-| **Target** | GitHub / Direct Install | F-Droid / IzzyOnDroid |
-| **File Size** | ~20 MB | ~5 MB |
-| **Offline OCR** | Included | Excluded |
-
----
-
-> **Privacy**: No data ever leaves your device. No analytics. No servers. Raw local processing.
-EOF
+          # Generate beautiful release notes by replacing VERSION in the template
+          sed "s/VERSION/${VERSION}/g" .github/workflows/release-notes-template.md > release_notes.md
 
           # Create or update the release
           gh release create "v${VERSION}" \
