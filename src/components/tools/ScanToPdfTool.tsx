@@ -75,7 +75,7 @@ function CameraModal({ onCapture, onClose, onUpload }: {
       }
     } catch (e: any) {
       if (e.name === 'NotAllowedError' || e.name === 'PermissionDeniedError') {
-        setError('Camera permission denied. Please allow camera access in your browser settings.')
+        setError('Camera permission denied. Please allow camera access in your mobile settings.')
       } else if (e.name === 'NotFoundError') {
         setError('No camera found on this device.')
       } else {
