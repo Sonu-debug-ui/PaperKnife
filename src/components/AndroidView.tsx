@@ -20,11 +20,21 @@ import {
   Sun as SunIcon, 
   Upload as UploadIcon,
   LayoutGrid as LayoutGridIcon, 
-  ClipboardList
+  ClipboardList,
+  HelpCircle as HelpIcon,
+  Activity as ActivityIcon,
+  Star as StarIcon,
+  Info as InfoIcon,
+  User as UserIcon,
+  Github as GHIcon,
+  DownloadCloud
 } from 'lucide-react'
 import { useState, useEffect, useRef } from 'react'
-import { getRecentActivity, ActivityEntry } from '../utils/recentActivity'
+import { getRecentActivity, ActivityEntry, clearActivity } from '../utils/recentActivity'
+import { toast } from 'sonner'
+import { Capacitor } from '@capacitor/core'
 import { PaperKnifeLogo } from './Logo'
+import { APP_VERSION } from '../utils/version'
 
 interface AndroidViewProps {
   theme: 'light' | 'dark'
@@ -200,7 +210,7 @@ export default function AndroidView({ theme, toggleTheme, onFileSelect }: Androi
 
         {/* Minimal Footer */}
         <div className="flex flex-col items-center gap-2 py-8 opacity-20">
-           <p className="text-[8px] font-black uppercase tracking-[0.4em] dark:text-white text-center">PaperKnife v1.0.9</p>
+           <p className="text-[8px] font-black uppercase tracking-[0.4em] dark:text-white text-center">PaperKnife v{APP_VERSION}</p>
         </div>
 
       </main>

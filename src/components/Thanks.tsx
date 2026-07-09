@@ -2,6 +2,7 @@ import { Github as GHIcon, Heart as HeartIcon, Sparkles, ChevronRight } from 'lu
 import { Capacitor } from '@capacitor/core'
 import { NativeToolLayout } from './tools/shared/NativeToolLayout'
 import { PaperKnifeLogo } from './Logo'
+import { APP_VERSION } from '../utils/version'
 
 export default function Thanks() {
   const isNative = Capacitor.isNativePlatform()
@@ -83,7 +84,7 @@ export default function Thanks() {
 
       <footer className="text-center py-8 opacity-20">
          <PaperKnifeLogo size={24} iconColor="#F43F5E" partColor="currentColor" className="mx-auto mb-4" />
-         <p className="text-[8px] font-black uppercase tracking-[0.5em]">PaperKnife Protocol v1.0.9</p>
+         <p className="text-[8px] font-black uppercase tracking-[0.5em]">PaperKnife Protocol v{APP_VERSION}</p>
       </footer>
     </div>
   )

@@ -23,6 +23,7 @@ import { Capacitor } from '@capacitor/core'
 import { NativeToolLayout } from './tools/shared/NativeToolLayout'
 import { PaperKnifeLogo } from './Logo'
 import { ViewMode } from '../types'
+import { APP_VERSION } from '../utils/version'
 
 // --- UI COMPONENTS ---
 const SpecItem = ({ title, icon: Icon, children, defaultOpen = false }: { title: string, icon: any, children: React.ReactNode, defaultOpen?: boolean }) => {
@@ -183,7 +184,7 @@ const AboutAPK = () => {
             <PaperKnifeLogo size={40} iconColor="#F43F5E" partColor="currentColor" />
           </div>
           <h2 className="text-2xl font-black tracking-tighter dark:text-white leading-none mb-1">PaperKnife</h2>
-          <p className="text-[9px] font-black uppercase tracking-widest text-rose-500">v1.0.9 Stable • Absolute Privacy</p>
+          <p className="text-[9px] font-black uppercase tracking-widest text-rose-500">v{APP_VERSION} Stable • Absolute Privacy</p>
         </div>
 
         {/* 2. Fuel the Engine (Prominent Support - MOVED TO TOP) */}
