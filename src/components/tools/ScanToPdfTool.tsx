@@ -57,6 +57,8 @@ function CameraModal({ onCapture, onClose, onUpload }: {
   const [facingMode, setFacingMode] = useState<'environment' | 'user'>('environment')
   const [ready, setReady] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const isNative = Capacitor.isNativePlatform()
+  const isMobileWeb = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
 
   const startCamera = useCallback(async (mode: 'environment' | 'user') => {
     streamRef.current?.getTracks().forEach(t => t.stop())
@@ -75,14 +77,18 @@ function CameraModal({ onCapture, onClose, onUpload }: {
       }
     } catch (e: any) {
       if (e.name === 'NotAllowedError' || e.name === 'PermissionDeniedError') {
-        setError('Camera permission denied. Please allow camera access in your mobile settings.')
+        if (isNative) {
+          setError('Camera permission denied. Please allow camera access in your device settings.')
+        } else {
+          setError('Camera permission denied. Please allow camera access in your browser settings.')
+        }
       } else if (e.name === 'NotFoundError') {
         setError('No camera found on this device.')
       } else {
         setError('Could not start camera. Make sure no other app is using it.')
       }
     }
-  }, [])
+  }, [isNative])
 
   useEffect(() => {
     startCamera(facingMode)
@@ -128,18 +134,52 @@ function CameraModal({ onCapture, onClose, onUpload }: {
               {/* Fix instructions */}
               <div className="bg-white/5 rounded-2xl p-4 text-left space-y-2">
                 <p className="text-white/60 text-[10px] font-black uppercase tracking-widest mb-3">How to allow camera</p>
-                <div className="flex items-start gap-2">
-                  <span className="w-5 h-5 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center shrink-0 mt-0.5">1</span>
-                  <p className="text-white/70 text-xs">Click the 🔒 lock icon in your browser address bar</p>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="w-5 h-5 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center shrink-0 mt-0.5">2</span>
-                  <p className="text-white/70 text-xs">Set <strong className="text-white">Camera</strong> to <strong className="text-white">Allow</strong></p>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="w-5 h-5 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center shrink-0 mt-0.5">3</span>
-                  <p className="text-white/70 text-xs">Reload the page and tap Retry</p>
-                </div>
+                {isNative ? (
+                  <>
+                    <div className="flex items-start gap-2">
+                      <span className="w-5 h-5 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center shrink-0 mt-0.5">1</span>
+                      <p className="text-white/70 text-xs">Open your device's <strong className="text-white">Settings</strong></p>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="w-5 h-5 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center shrink-0 mt-0.5">2</span>
+                      <p className="text-white/70 text-xs">Go to <strong className="text-white">Apps &gt; PaperKnife &gt; Permissions</strong></p>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="w-5 h-5 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center shrink-0 mt-0.5">3</span>
+                      <p className="text-white/70 text-xs">Enable <strong className="text-white">Camera</strong> access, return here, and tap Retry</p>
+                    </div>
+                  </>
+                ) : isMobileWeb ? (
+                  <>
+                    <div className="flex items-start gap-2">
+                      <span className="w-5 h-5 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center shrink-0 mt-0.5">1</span>
+                      <p className="text-white/70 text-xs">Tap the settings/lock icon next to the URL in your browser</p>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="w-5 h-5 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center shrink-0 mt-0.5">2</span>
+                      <p className="text-white/70 text-xs">Set <strong className="text-white">Camera</strong> to <strong className="text-white">Allow</strong></p>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="w-5 h-5 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center shrink-0 mt-0.5">3</span>
+                      <p className="text-white/70 text-xs">Reload the page and tap Retry</p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex items-start gap-2">
+                      <span className="w-5 h-5 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center shrink-0 mt-0.5">1</span>
+                      <p className="text-white/70 text-xs">Click the 🔒 lock icon in your browser address bar</p>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="w-5 h-5 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center shrink-0 mt-0.5">2</span>
+                      <p className="text-white/70 text-xs">Set <strong className="text-white">Camera</strong> to <strong className="text-white">Allow</strong></p>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <span className="w-5 h-5 bg-rose-500 text-white text-[10px] font-black rounded-full flex items-center justify-center shrink-0 mt-0.5">3</span>
+                      <p className="text-white/70 text-xs">Reload the page and tap Retry</p>
+                    </div>
+                  </>
+                )}
               </div>
 
               {/* Buttons */}
